@@ -1,0 +1,12 @@
+inline void kmp(int len)// 获取next数组
+{
+    int i,j;
+    nxt[0]=-1;
+    for (i=0;i<len;++i)
+     {
+         j=nxt[i];
+         while (j!=-1&&s[j]!=s[i]) j=nxt[j];
+         nxt[i+1]=j+1;
+     }
+    return;
+}

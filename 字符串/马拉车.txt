@@ -1,0 +1,35 @@
+char s[maxn],ss[2*maxn];
+int len[maxn];
+void make_char()
+{
+    int j=0;
+    int l=strlen(s);
+    ss[0]='$';
+    for(int i=0;i<l;++i) 
+    {
+        ss[++j]='#';
+        ss[++j]=s[i];
+    }
+    ss[++j]='#';
+}
+int mlc()
+{
+    int l=strlen(ss);
+    int mx=0,id=0,i=0;//mx是当前最靠右的回文串的最右端,id是当前最靠右的子串的中间,i是当前比较的字符指针。
+    int ans=0;
+    for(int i=1;i<l;++i)
+    {
+        if(i>=mx) len[i]=1;
+        else len[i]=min(mx-i+1,len[2*id-i]);
+        while(ss[i-len[i]]==ss[i+len[i]]) len[i]++;
+        if(i+len[i]-1>mx) mx=i+len[i]-1,id=i;
+        ans=max(ans,len[i]-1);
+    }
+    return ans;
+}
+int main()
+{
+   scanf("%s",s);
+   make_char();
+   cout<<mlc()<<endl;
+}

@@ -1,0 +1,27 @@
+void dijkstra(int n,int beg)
+{
+    rep(i,1,n) {
+        lowcost[i]=inf;vis[i]=false;pre[i]=-1;
+    }
+    lowcost[beg]=0;
+    rep(i,1,n)
+    {
+        int k=-1,minn=inf;
+        rep(j,1,n)
+        {
+            if(!vis[j]&&lowcost[j]<minn){
+                minn=lowcost[j];k=j;
+            }
+        }
+        if(k==-1) break;
+        vis[k]=true;
+        rep(j,1,n)
+        {
+            if(!vis[j]&&lowcost[k]+cost[k][j]<lowcost[j]) 
+            {
+                lowcost[j]=lowcost[k]+cost[k][j];
+                pre[j]=k;
+            }
+        }
+    }
+}

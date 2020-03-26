@@ -1,0 +1,40 @@
+#include <algorithm>
+int  n,m,s,t,tot=0,head[maxn],l,r,match[maxn];
+bool vis[maxn];
+struct edge{int to,next;}e[maxm];
+void ins(int x,int y){e[tot].to=y;e[tot].next=head[x];head[x]=tot++;}
+bool dfs(int u)
+{
+    for(int i=head[u];i!=-1;i=e[i].next)
+    {
+        int v=e[i].to;
+        if(vis[v]) continue;
+        vis[v]=true;
+        if(match[v]==-1||dfs(match[v]))
+        {
+            match[v]=u;
+            return true;
+        }
+    }
+    return false;
+}
+int hungary(int x,int y)
+{
+    l=x;r=y;
+    int ans=0;
+    mem(match,-1);
+    for(int u=1;u<=l;++u)
+    {
+        mem(vis,0);
+        if(dfs(u)) ans++;
+    }
+    return ans;
+}
+void init()
+{
+   mem(head,-1);
+   tot=0;
+}
+int main() {
+    
+}

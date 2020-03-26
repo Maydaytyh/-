@@ -1,0 +1,17 @@
+bool Isp[MAXN];
+int Prime[MAXN];
+int num;
+void Get_p(int n)
+{
+    num=0;
+    rep(i,0,MAXN-1) Isp[i]=1;
+    Isp[0]=Isp[1]=0;
+    rep(i,2,n)
+    {
+        if(Isp[i])
+        {
+            Prime[num++]=i;
+            for(int j=2;i*j<=n;++j) Isp[i*j]=0;
+        }
+    }
+}

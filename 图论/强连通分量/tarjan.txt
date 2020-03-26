@@ -1,0 +1,142 @@
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+#include <cstdlib>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+#include <stack>
+//#include<bits/stdc++.h>
+using namespace std;
+#define mem(a, b) memset(a, b, sizeof(a))
+#define ll long long
+#define inf 1000000000
+#define maxn 10005
+#define maxm 100005
+#define eps 1e-10
+#define mod 1000000007
+#ifndef ONLINE_JUDGE
+#define dbg(x) cout<<#x<<"="<<x<<endl;
+#else 
+#define dbg(x) 
+#endif
+inline int read()
+{
+	int x = 0, f = 1;
+	char ch = getchar();
+	while (ch < '0' || ch > '9')
+	{
+		if (ch == '-')
+			f = -1;
+		ch = getchar();
+	}
+	while (ch >= '0' && ch <= '9')
+	{
+		x = 10 * x + ch - '0';
+		ch = getchar();
+	}
+	return x * f;
+}
+struct node
+{
+	int to, next;
+} edge[maxm];
+int n, m, head[maxn], vis[maxn], dfn[maxn], low[maxn], du[maxn], num[maxn], cnt, timi, stack1[maxn], top, cut, cost[maxn], cos1[maxn];
+void init()
+{
+	memset(dfn, 0, sizeof(dfn));
+	memset(low, 0, sizeof(low));
+	memset(head, -1, sizeof(head));
+	memset(vis, 0, sizeof(vis));
+	memset(num, 0, sizeof(num));
+	memset(du, 0, sizeof(du));
+	mem(cos1, 0x3f);
+	cnt = 0;
+	timi = 1;
+	top = 0;
+	cut = 0;
+}
+stack<int> s;
+void addedge(int u, int v)
+{
+	edge[cnt].to = v;
+	edge[cnt].next = head[u];
+	head[u] = cnt;
+	cnt++;
+}
+void tarjan(int u)
+{
+	dfn[u] = timi;
+	low[u] = timi;
+	timi++;
+	s.push(u);
+	//stack1[top]=u;top++;
+	vis[u] = 1;
+	for (int i = head[u]; i != -1; i = edge[i].next)
+	{
+		int v = edge[i].to;
+		if (!dfn[v])
+		{
+			tarjan(v);
+			low[u] = min(low[u], low[v]);
+		}
+		else
+		{
+			low[u] = min(low[u], dfn[v]);
+		}
+	}
+	if (low[u] == dfn[u])
+	{
+		cut++;
+		int x = s.top();
+		while (!s.empty() && x != u)
+		{
+			vis[s.top()] = 0;
+			//vis[stack1[top]]=2;
+			num[s.top()] = cut;
+			cos1[cut]=min(cos1[cut],cost[s.top()]);
+			s.pop();
+			x = s.top();
+		}
+		num[s.top()] = cut;
+		cos1[cut]=min(cos1[cut],cost[s.top()]);
+		vis[s.top()] = 0;
+		s.pop();
+	}
+}
+int main()
+{
+	int a, b;
+	while (~scanf("%d", &n))
+	{
+		init();
+		for (int i = 1; i <= n; ++i)
+			cost[i] = read();
+		for (int i = 1; i <= n; ++i)
+		{
+			scanf("%d", &b);
+			addedge(i, b);
+		}
+		for (int i = 1; i <= n; ++i)
+		{
+			if (!dfn[i])
+				tarjan(i);
+		}
+		ll sum = 0;
+		for(int i=1;i<=n;++i)
+      {
+         for(int j=head[i];j!=-1;j=edge[j].next)
+        {
+          if(num[i]!=num[edge[j].to]) {du[num[i]]++;
+          }
+        }
+      }
+	  for(int i=1;i<=cut;++i) {
+		  if(!du[i]) sum+=cos1[i];
+	  }
+		//dbg(cut);
+		//for(int i=1;i<=n;++i) dbg(num[i]);
+		cout << sum << endl;
+	}
+	return 0;
+}

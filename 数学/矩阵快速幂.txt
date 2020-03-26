@@ -1,0 +1,108 @@
+#include<bits/stdc++.h>
+#include<iostream>
+#include<algorithm>
+#include<cstdio> 
+using namespace std;
+#define MAXN 20 
+#define num 100 
+#define mem(a,b) memset(a,b,sizeof a)
+#define rep(i,n,m) for(int i=n;i<=m;++i)
+const int MOD = 9973;
+struct Matrix//¾ØÕóÀà
+{
+	int a[num][num];
+	void init()
+	{
+		mem(a, 0);
+		rep(i, 0, MAXN - 1) a[i][i] = 1;
+	}
+	Matrix mul(Matrix b)
+	{
+		Matrix ans;
+		rep(i, 0, MAXN - 1)
+			rep(j, 0, MAXN - 1)
+		{
+			ans.a[i][j] = 0;
+			rep(k, 0, MAXN - 1)
+				ans.a[i][j] += a[i][k] * b.a[k][j] % MOD;
+			ans.a[i][j] %= MOD;
+		}
+		return ans;
+	}
+	Matrix add(Matrix b)
+	{
+		int i, j, k;
+		Matrix ans;
+		rep(i, 0, MAXN - 1)
+			rep(j, 0, MAXN - 1)
+		{
+			ans.a[i][j] = (a[i][j] + b.a[i][j]) % MOD;
+			ans.a[i][j] %= MOD;
+		}
+		return ans;
+	}
+	void print()
+	{
+		rep(i, 0, MAXN - 1)
+			rep(j, 0, MAXN - 1)
+			printf("%d%c", a[i][j], j == MAXN - 1 ? '\n' : ' ');
+	}
+} A;
+Matrix quick_pow(Matrix a, int n)
+{
+	Matrix ans;
+	ans.init();
+	while (n)
+	{
+
+		if (n & 1)
+			ans = ans.mul(a);
+		n >>= 1;
+		a = a.mul(a);
+	}
+	return ans;
+}
+Matrix add(Matrix a, Matrix b)
+{
+	int i, j, k;
+	Matrix ans;
+	rep(i, 0, MAXN - 1)
+		rep(j, 0, MAXN - 1)
+	{
+		ans.a[i][j] = (a.a[i][j] + b.a[i][j]) % MOD;
+		ans.a[i][j] %= MOD;
+	}
+	return ans;
+}
+Matrix sum(Matrix a, int n)
+{
+	int m;
+	Matrix ans, pre;
+	if (n == 1)
+		return a;
+	m = n >> 1;
+	pre = sum(a, m);
+	ans = add(pre, pre.mul(quick_pow(a, m)));
+	if (n & 1)
+		ans = ans.add(quick_pow(a, n));
+	return ans;
+}
+int main()
+{
+	int T;
+	cin>>T;
+	while(T--){	
+	int n, k;
+	cin >> n >> k;
+	rep(i, 0, n - 1)
+		rep(j, 0, n - 1)
+		cin >> A.a[i][j];
+	Matrix ans = quick_pow(A, k);
+	int sum = 0;
+	rep(i, 0, n - 1)
+	{
+		sum = (sum + ans.a[i][i]) % MOD;
+	}
+	cout << sum << endl;
+}
+}

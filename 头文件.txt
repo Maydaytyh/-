@@ -1,0 +1,108 @@
+#include <iostream>`
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <cstring>
+#include <deque>
+#include <cmath>
+#include <string>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <queue>
+#include <vector>
+#include <time.h>
+#include <list>
+using namespace std;
+#define INF 0x3f3f3f3f
+#define MAXN (100000 + 50)
+#define MAXM 30000
+#define ll long long
+#define ull unsigned long long
+#define ri register int
+#define per(i, n, m) for (int i = n; i >= m; --i)
+#define rep(i, n, m) for (int i = n; i <= m; ++i)
+#define mian main
+#define mem(a, b) memset(a, b, sizeof a)
+const int MOD = 1e9 + 7;
+#ifndef ONLINE_JUDGE
+#define dbg(x) cout << #x << "=" << x << endl;
+#else
+#define dbg(x)
+#endif
+namespace io
+{
+const int SIZE = (1 << 21) + 1;
+char ibuf[SIZE], *iS, *iT, obuf[SIZE], *oS = obuf, *oT = oS + SIZE - 1, c, qu[55];
+int f, qr;
+// getchar
+#define gc() (iS == iT ? (iT = (iS = ibuf) + fread(ibuf, 1, SIZE, stdin), (iS == iT ? EOF : *iS++)) : *iS++)
+// print the remaining part
+inline void flush()
+{
+	fwrite(obuf, 1, oS - obuf, stdout);
+	oS = obuf;
+}
+// putchar
+inline void putc(register char x)
+{
+	*oS++ = x;
+	if (oS == oT)
+		flush();
+}
+// input a signed integer
+template <class I>
+inline void read(I &x)
+{
+	for (f = 1, c = gc(); c < '0' || c > '9'; c = gc())
+		if (c == '-')
+			f = -1;
+	for (x = 0; c <= '9' && c >= '0'; c = gc())
+		x = (x << 1) + (x << 3) + (c & 15);
+	x *= f;
+}
+// print a signed integer
+template <class I>
+inline void print(I x)
+{
+	if (!x)
+		putc('0');
+	if (x < 0)
+		putc('-'), x = -x;
+	while (x)
+		qu[++qr] = x % 10 + '0', x /= 10;
+	while (qr)
+		putc(qu[qr--]);
+}
+//no need to call flush at the end manually!
+struct Flusher_
+{
+	~Flusher_() { flush(); }
+} io_flusher_;
+} // namespace io
+using io::read;
+using io::print;
+using io::putc;
+inline int qpow(ri a, ri b)
+{
+	ri ans = 1;
+	for (; b; b >>= 1, a = (ll)a * a % MOD)
+		if (b & 1)
+			ans = (ll)ans * a % MOD;
+	return ans;
+}
+inline int gcd(int a, int b)
+{
+	return b ? gcd(b, a % b) : a;
+}
+int main()
+{
+#ifndef ONLINE_JUDGE
+	int startTime = clock();
+#endif
+	
+#ifndef ONLINE_JUDGE
+	printf("Time = %dms\n", clock() - startTime);
+#endif
+}

@@ -1,0 +1,56 @@
+int  n,m,s,t,maxflow,tot,head[maxn],cur[maxn],h[maxn],dis[maxn],pre[maxn];
+bool vis[maxn];
+struct edge{int from,to,next,v,cost;}e[maxm];
+void ins(int x,int y,int z,int t){e[tot++].to=y;e[tot].from=x;e[tot].v=z;e[tot].next=head[x];e[tot].cost=t;head[x]=tot;}
+void insert(int x,int y,int z,int t){ins(x,y,z,t);ins(y,x,0,-t);}
+queue<int> q;
+bool spfa(int s,int t)
+{
+    while(!q.empty()) q.pop();
+    mem(dis,0x3f);
+    mem(vis,0);
+    mem(pre,-1);
+    q.push(s);vis[s]=1;dis[s]=0;
+    while(!q.empty()) 
+    {
+        int u=q.front();q.pop();vis[u]=0;
+        for(int i=head[u];i!=-1;i=e[i].next)
+        {
+            if(e[i].v&&dis[u]+e[i].cost<dis[e[i].to])
+            {
+                int v=e[i].to;
+                dis[v]=dis[u]+e[i].cost;
+                pre[v]=i;
+                if(!vis[v]) q.push(v),vis[v]=1;
+            }
+        }
+    }
+    return dis[t]<INF;
+}
+ll mcmf(int s,int t)
+{
+    ll mincost=0;
+    maxflow=0;
+    while(spfa(s,t))
+    {
+        int flow=INF;
+        for(int i=pre[t];i!=-1;i=pre[e[i].from])
+          flow=min(flow,e[i].v);
+        for(int i=pre[t];i!=-1;i=pre[e[i].from])
+        {
+            e[i].v-=flow;
+            e[i^1].v+=flow;
+            mincost+=e[i].cost*flow;
+        }  
+        maxflow+=flow;
+    }
+    return mincost;
+}
+void init()
+{
+   mem(head,-1);
+   tot=1;
+}
+int main() {
+   
+}

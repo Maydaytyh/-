@@ -1,0 +1,15 @@
+int euler(int n)//返回euler(n)
+{
+     int i;
+     int res = n,a = n;
+     for(i = 2;i*i <= a; ++i)
+     {
+         if(a%i == 0)
+         {
+             res -= res/i; //p(n) = (p - p/p1)(1 - 1/p2)......
+             while(a%i == 0) a/=i;
+         }
+     }
+     if(a > 1) res -= res/a;//存在大于sqrt(a)的质因子
+     return res;
+}

@@ -1,0 +1,29 @@
+void spfa()
+{
+    for(int i=1;i<=cut;++i) d[i]=0;
+    mem(vis,0);
+    int l=0,r=1,x,y;
+    
+    q[1]=num[ss];d[num[ss]]=s1[num[ss]];
+    //cout<<q[1]<<endl;
+    //cout<<l<<" "<<r<<endl;
+    while(l!=r)
+    {
+        x=q[++l];
+        //cout<<head[x]<<endl;
+        if(l==maxn) l=0;vis[x]=0;
+        for(int i=head[x];i!=-1;i=edge[i].next)
+        {
+         // cout<<"i="<<i<<endl;
+            if(d[x]+s1[y=edge[i].to]>d[y])
+            {
+                d[y]=d[x]+s1[y];
+               // cout<<"y="<<y<<endl;
+                if(!vis[y])
+                {
+                    vis[y]=1;q[++r]=y;if(r==maxn) r=0;
+                }
+            }
+        }
+    }
+}
